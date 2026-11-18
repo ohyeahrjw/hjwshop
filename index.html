@@ -16,14 +16,14 @@
         <div class="relative z-10 text-center px-4 max-w-2xl">
             <span class="bg-pink-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Dashboard 2026</span>
             <h1 class="text-3xl md:text-5xl font-extrabold mt-3 mb-2 tracking-tight">Pro Jastip & Expense Tracker 🛒💅</h1>
-            <p class="text-sm md:text-md text-indigo-100 font-medium">Pantau umur perjalanan barang, fleksibel hadapi delay, dan kelola jajan tanpa drama!</p>
+            <p class="text-sm md:text-md text-indigo-100 font-medium">Tracking progress detail tanggal pergerakan barang & bebas drama boncos!</p>
         </div>
     </header>
 
     <!-- MAIN APP CONTAINER -->
     <main class="max-w-7xl mx-auto px-4 py-10">
 
-        <!-- ================= HALAMAN 1: HOMEPAGE (DUA KOTAK BESAR) ================= -->
+        <!-- ================= HALAMAN 1: HOMEPAGE ================= -->
         <div id="view-home" class="space-y-8">
             <h2 class="text-2xl font-bold text-gray-800 text-center mb-6">✨ Pilih Kategori Tracker Lu</h2>
             
@@ -129,34 +129,28 @@
                 <input type="hidden" id="editMonthKey">
                 <input type="hidden" id="existingImage">
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Pilih Bulan Transaksi</label>
-                        <select id="inputMonth" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50 font-medium" required>
-                            <option value="january">Januari 2026</option>
-                            <option value="february">Februari 2026</option>
-                            <option value="march">Maret 2026</option>
-                            <option value="april">April 2026</option>
-                            <option value="may">Mei 2026</option>
-                            <option value="june">Juni 2026</option>
-                            <option value="july">Juli 2026</option>
-                            <option value="august">Agustus 2026</option>
-                            <option value="september">September 2026</option>
-                            <option value="october">Oktober 2026</option>
-                            <option value="november">November 2026</option>
-                            <option value="december">Desember 2026</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Tanggal Pembelian</label>
-                        <input type="date" id="inputDate" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50" required>
-                    </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Pilih Bulan Transaksi</label>
+                    <select id="inputMonth" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50 font-medium" required>
+                        <option value="january">Januari 2026</option>
+                        <option value="february">Februari 2026</option>
+                        <option value="march">Maret 2026</option>
+                        <option value="april">April 2026</option>
+                        <option value="may">Mei 2026</option>
+                        <option value="june">Juni 2026</option>
+                        <option value="july">Juli 2026</option>
+                        <option value="august">Agustus 2026</option>
+                        <option value="september">September 2026</option>
+                        <option value="october">Oktober 2026</option>
+                        <option value="november">November 2026</option>
+                        <option value="december">Desember 2026</option>
+                    </select>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Nama Barang</label>
-                        <input type="text" id="inputName" placeholder="Contoh: Album TREASURE / Hoodie" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50" required>
+                        <input type="text" id="inputName" placeholder="Contoh: Album TREASURE" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50" required>
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Group Order ( GO )</label>
@@ -177,8 +171,31 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Upload Foto (Dari HP / Galeri)</label>
+                        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Upload Foto (Galeri HP)</label>
                         <input type="file" id="inputPhotoFile" accept="image/*" class="w-full border border-gray-200 rounded-xl p-2 text-xs bg-gray-50 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-pink-50 file:text-pink-700 hover:file:bg-pink-100">
+                    </div>
+                </div>
+
+                <!-- SECTION TRACKING TANGGAL PROGRESS -->
+                <div class="bg-indigo-50/50 p-4 rounded-2xl border border-indigo-100 space-y-3">
+                    <label class="block text-xs font-extrabold text-indigo-900 uppercase tracking-wider">📅 Tracking Tanggal Progress Status</label>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-600 uppercase mb-1">1. Ordered</label>
+                            <input type="date" id="dateOrdered" class="w-full border border-gray-200 rounded-lg p-2 text-xs bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-600 uppercase mb-1">2. Arrived WH</label>
+                            <input type="date" id="dateWh" class="w-full border border-gray-200 rounded-lg p-2 text-xs bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-600 uppercase mb-1">3. Arrived Admin</label>
+                            <input type="date" id="dateAdmin" class="w-full border border-gray-200 rounded-lg p-2 text-xs bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-600 uppercase mb-1">4. On Hand</label>
+                            <input type="date" id="dateOnhand" class="w-full border border-gray-200 rounded-lg p-2 text-xs bg-white">
+                        </div>
                     </div>
                 </div>
 
@@ -203,10 +220,10 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Tax / Biaya Admin (Rp)</label>
-                        <input type="number" id="inputTax" placeholder="Contoh: 5000" value="0" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-55" required>
+                        <input type="number" id="inputTax" placeholder="Contoh: 5000" value="0" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50" required>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Status Barang</label>
+                        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Status Utama Saat Ini</label>
                         <select id="inputStatus" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50">
                             <option value="Ordered">Ordered</option>
                             <option value="Arrived WH">Arrived WH</option>
@@ -219,7 +236,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Estimasi / Info Durasi</label>
-                        <input type="text" id="inputEstimate" placeholder="Contoh: Menunggu batch cargo / Minggu depan" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50" required>
+                        <input type="text" id="inputEstimate" placeholder="Contoh: Menunggu batch cargo" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50" required>
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Link Checkout</label>
@@ -247,7 +264,7 @@
         let currentCategory = 'kpop';
         let myChart = null;
 
-        let allData = JSON.parse(localStorage.getItem('myProJastipTrackerFlex')) || {
+        let allData = JSON.parse(localStorage.getItem('myProJastipTrackerDates')) || {
             kpop: {
                 name: "💿 Jajan K-Pop Tracker",
                 months: {
@@ -256,10 +273,11 @@
                         isOpen: true,
                         items: [
                             {
-                                date: "2026-01-10", name: "Album TREASURE", go: "GO @sunshineshop",
+                                name: "Album TREASURE", go: "GO @sunshineshop",
                                 country: "South Korea 🇰🇷", img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=120",
+                                dateOrdered: "2026-01-10", dateWh: "2026-01-18", dateAdmin: "", dateOnhand: "",
                                 paymentType: "Down Payment", price: 150000, sisa: 150000, tax: 3000,
-                                status: "Arrived WH", estimate: "Menunggu jadwal flight", link: "https://shopee.co.id", notes: "Aman walau agak slow"
+                                status: "Arrived WH", estimate: "Menunggu jadwal flight", link: "https://shopee.co.id", notes: "Aman"
                             }
                         ]
                     }
@@ -273,10 +291,11 @@
                         isOpen: true,
                         items: [
                             {
-                                date: "2026-01-12", name: "Kopi Susu Senopati", go: "Personal",
+                                name: "Kopi Susu Senopati", go: "Personal",
                                 country: "Others 🌍", img: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=120",
+                                dateOrdered: "2026-01-12", dateWh: "", dateAdmin: "", dateOnhand: "2026-01-12",
                                 paymentType: "Full Payment", price: 45000, sisa: 0, tax: 2000,
-                                status: "On Hand", estimate: "Hari ini", link: "https://gojek.com", notes: "Ngopi sore"
+                                status: "On Hand", estimate: "Hari ini", link: "https://gojek.com", notes: "Ngopi"
                             }
                         ]
                     }
@@ -285,25 +304,12 @@
         };
 
         function saveData() {
-            localStorage.setItem('myProJastipTrackerFlex', JSON.stringify(allData));
+            localStorage.setItem('myProJastipTrackerDates', JSON.stringify(allData));
             renderTrackerView();
         }
 
         function formatRupiah(angka) {
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(angka);
-        }
-
-        // Fungsi menghitung umur perjalanan barang (Elapsed Days) secara otomatis
-        function hitungUmurPerjalanan(tanggalBeli) {
-            if (!tanggalBeli) return '';
-            const tglOrder = new Date(tanggalBeli);
-            const hariIni = new Date();
-            const selisihWaktu = hariIni - tglOrder;
-            const selisihHari = Math.floor(selisihWaktu / (1000 * 60 * 60 * 24));
-            
-            if (selisihHari < 0) return '(Baru di-order)';
-            if (selisihHari === 0) return '(Hari ini)';
-            return `(Udah jalan ${selisihHari} hari)`;
         }
 
         function toggleSisaInput() {
@@ -368,11 +374,16 @@
                 document.getElementById('editIndex').value = index;
                 const item = allData[currentCategory].months[monthKey].items[index];
                 
-                document.getElementById('inputDate').value = item.date || '';
                 document.getElementById('inputName').value = item.name || '';
                 document.getElementById('inputGo').value = item.go || '';
                 document.getElementById('inputCountry').value = item.country || 'South Korea 🇰🇷';
                 document.getElementById('existingImage').value = item.img || '';
+                
+                document.getElementById('dateOrdered').value = item.dateOrdered || '';
+                document.getElementById('dateWh').value = item.dateWh || '';
+                document.getElementById('dateAdmin').value = item.dateAdmin || '';
+                document.getElementById('dateOnhand').value = item.dateOnhand || '';
+
                 document.getElementById('inputPaymentType').value = item.paymentType || 'Full Payment';
                 document.getElementById('inputPrice').value = item.price || 0;
                 document.getElementById('inputSisa').value = item.sisa || 0;
@@ -389,7 +400,7 @@
                 form.reset();
                 document.getElementById('existingImage').value = '';
                 document.getElementById('inputMonth').value = monthKey;
-                document.getElementById('inputDate').valueAsDate = new Date();
+                document.getElementById('dateOrdered').valueAsDate = new Date(); // Default tanggal hari ini untuk ordered
                 toggleSisaInput();
             }
             modal.classList.remove('hidden');
@@ -425,11 +436,14 @@
                 const taxVal = parseFloat(document.getElementById('inputTax').value) || 0;
 
                 const newItem = {
-                    date: document.getElementById('inputDate').value,
                     name: document.getElementById('inputName').value,
                     go: document.getElementById('inputGo').value,
                     country: document.getElementById('inputCountry').value,
                     img: imgUrl || existingImg || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=120',
+                    dateOrdered: document.getElementById('dateOrdered').value,
+                    dateWh: document.getElementById('dateWh').value,
+                    dateAdmin: document.getElementById('dateAdmin').value,
+                    dateOnhand: document.getElementById('dateOnhand').value,
                     paymentType: payType,
                     price: priceVal,
                     sisa: sisaVal,
@@ -472,7 +486,7 @@
             }
         }
 
-        // Render Tabel Utama dengan Durasi Berjalan
+        // Render Tabel Utama (Kolom Foto & Nama Barang Dipisah biar gak nabrak)
         function renderTrackerView() {
             const container = document.getElementById('months-container');
             container.innerHTML = '';
@@ -500,26 +514,30 @@
 
                         let hargaBersih = item.price + (item.sisa || 0);
                         let totalSemua = hargaBersih + (item.tax || 0);
-                        let umurHari = hitungUmurPerjalanan(item.date);
+
+                        // Ringkasan Tanggal Progress
+                        let infoTanggal = `
+                            <div class="text-[11px] text-gray-600 space-y-0.5 whitespace-nowrap">
+                                ${item.dateOrdered ? `<div>🛒 Ord: ${item.dateOrdered}</div>` : ''}
+                                ${item.dateWh ? `<div>📦 WH: ${item.dateWh}</div>` : ''}
+                                ${item.dateAdmin ? `<div>✨ Adm: ${item.dateAdmin}</div>` : ''}
+                                ${item.dateOnhand ? `<div>🎉 Hand: ${item.dateOnhand}</div>` : ''}
+                            </div>
+                        `;
 
                         rowsHTML += `
-                            <tr class="hover:bg-gray-50/60 transition border-b border-gray-100 text-sm">
-                                <td class="py-4 px-3 text-xs text-gray-600 font-medium">
-                                    ${item.date || '-'}
-                                    <div class="text-[10px] text-pink-500 font-bold mt-0.5">${umurHari}</div>
+                            <tr class="hover:bg-gray-50/60 transition border-b border-gray-100 text-sm align-middle">
+                                <td class="py-4 px-3 text-center">
+                                    <img src="${item.img}" class="w-12 h-12 object-cover rounded-xl shadow-sm mx-auto" alt="Foto">
                                 </td>
-                                <td class="py-4 px-3 flex items-center space-x-3">
-                                    <img src="${item.img}" class="w-12 h-12 object-cover rounded-xl shadow-sm flex-shrink-0" alt="Foto">
-                                    <div>
-                                        <p class="font-semibold text-gray-800">${item.name}</p>
-                                    </div>
-                                </td>
-                                <td class="py-4 px-3 font-medium text-indigo-600 text-xs">${item.go}</td>
-                                <td class="py-4 px-3 font-medium text-gray-700">${item.country}</td>
+                                <td class="py-4 px-3 font-semibold text-gray-800">${item.name}</td>
+                                <td class="py-4 px-3 font-medium text-indigo-600 text-xs whitespace-nowrap">${item.go}</td>
+                                <td class="py-4 px-3 font-medium text-gray-700 whitespace-nowrap">${item.country}</td>
+                                <td class="py-4 px-3">${infoTanggal}</td>
                                 <td class="py-4 px-3">${payBadge}</td>
-                                <td class="py-4 px-3 font-semibold text-gray-800">${formatRupiah(hargaBersih)}</td>
-                                <td class="py-4 px-3 text-gray-600">${formatRupiah(item.tax || 0)}</td>
-                                <td class="py-4 px-3 font-extrabold text-pink-600">${formatRupiah(totalSemua)}</td>
+                                <td class="py-4 px-3 font-semibold text-gray-800 whitespace-nowrap">${formatRupiah(hargaBersih)}</td>
+                                <td class="py-4 px-3 text-gray-600 whitespace-nowrap">${formatRupiah(item.tax || 0)}</td>
+                                <td class="py-4 px-3 font-extrabold text-pink-600 whitespace-nowrap">${formatRupiah(totalSemua)}</td>
                                 <td class="py-4 px-3"><span class="px-3 py-1 ${statusColor} rounded-full text-xs font-semibold whitespace-nowrap">${item.status}</span></td>
                                 <td class="py-4 px-3 text-gray-600 text-xs">
                                     <span class="font-medium">${item.estimate}</span>
@@ -551,13 +569,14 @@
                         </div>
                         <div class="p-6 space-y-6 ${monthData.isOpen ? '' : 'hidden'}">
                             <div class="overflow-x-auto">
-                                <table class="w-full text-left border-collapse min-w-[1050px]">
+                                <table class="w-full text-left border-collapse min-w-[1200px]">
                                     <thead>
                                         <tr class="border-b text-gray-400 text-xs uppercase tracking-wider">
-                                            <th class="py-3 px-3">Tanggal / Umur</th>
-                                            <th class="py-3 px-3">Barang & Foto</th>
+                                            <th class="py-3 px-3 text-center">Foto</th>
+                                            <th class="py-3 px-3">Barang</th>
                                             <th class="py-3 px-3">Group Order</th>
                                             <th class="py-3 px-3">Negara</th>
+                                            <th class="py-3 px-3">Progress Tanggal</th>
                                             <th class="py-3 px-3">Payment</th>
                                             <th class="py-3 px-3">Harga Bersih + Sisa</th>
                                             <th class="py-3 px-3">Tax</th>
