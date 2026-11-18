@@ -16,7 +16,7 @@
         <div class="relative z-10 text-center px-4 max-w-2xl">
             <span class="bg-pink-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Dashboard 2026</span>
             <h1 class="text-3xl md:text-5xl font-extrabold mt-3 mb-2 tracking-tight">Pro Jastip & Expense Tracker 🛒💅</h1>
-            <p class="text-sm md:text-md text-indigo-100 font-medium">Tracking progress detail tanggal pergerakan barang & bebas drama boncos!</p>
+            <p class="text-sm md:text-md text-indigo-100 font-medium">Multi-currency, total durasi hari perjalanan, tracking progress, & rekap keuangan!</p>
         </div>
     </header>
 
@@ -160,19 +160,30 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Asal Negara</label>
-                        <select id="inputCountry" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50" required>
-                            <option value="South Korea 🇰🇷">South Korea 🇰🇷</option>
-                            <option value="Japan 🇯🇵">Japan 🇯🇵</option>
-                            <option value="China 🇨🇳">China 🇨🇳</option>
-                            <option value="Thailand 🇹🇭">Thailand 🇹🇭</option>
-                            <option value="Philippines 🇵🇭">Philippines 🇵🇭</option>
-                            <option value="Others 🌍">Others 🌍</option>
+                        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Negara Asal (Bendera)</label>
+                        <select id="inputCountry" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50 font-medium" required>
+                            <option value="🇰🇷">🇰🇷 South Korea (KRW ₩)</option>
+                            <option value="🇯🇵">🇯🇵 Japan (JPY ¥)</option>
+                            <option value="🇨🇳">🇨🇳 China (CNY ¥)</option>
+                            <option value="🇹🇭">🇹🇭 Thailand (THB ฿)</option>
+                            <option value="🇵🇭">🇵🇭 Philippines (PHP ₱)</option>
+                            <option value="🌍">🌍 Others (USD $)</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Upload Foto (Galeri HP)</label>
                         <input type="file" id="inputPhotoFile" accept="image/*" class="w-full border border-gray-200 rounded-xl p-2 text-xs bg-gray-50 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-pink-50 file:text-pink-700 hover:file:bg-pink-100">
+                    </div>
+                </div>
+
+                <!-- HARGA ASAL & CURRENCY -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Harga Asal (Mata Uang Asing)</label>
+                        <input type="number" step="any" id="inputForeignPrice" placeholder="Contoh: 35000" class="w-full border border-gray-200 rounded-xl p-2.5 text-sm bg-white" required>
+                    </div>
+                    <div class="flex items-center text-xs text-gray-500 italic pt-5">
+                        *Otomatis ngikutin mata uang dari bendera negara, bestie! 💅
                     </div>
                 </div>
 
@@ -199,9 +210,10 @@
                     </div>
                 </div>
 
+                <!-- SECTION PAYMENT RUPIAH -->
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-gray-50 p-4 rounded-2xl border border-gray-100">
                     <div>
-                        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Tipe Payment</label>
+                        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Tipe Payment (IDR)</label>
                         <select id="inputPaymentType" onchange="toggleSisaInput()" class="w-full border border-gray-200 rounded-xl p-2.5 text-sm bg-white">
                             <option value="Full Payment">Full Payment</option>
                             <option value="Down Payment">Down Payment (DP)</option>
@@ -264,7 +276,7 @@
         let currentCategory = 'kpop';
         let myChart = null;
 
-        let allData = JSON.parse(localStorage.getItem('myProJastipTrackerDates')) || {
+        let allData = JSON.parse(localStorage.getItem('myProJastipTrackerTotalDays')) || {
             kpop: {
                 name: "💿 Jajan K-Pop Tracker",
                 months: {
@@ -274,10 +286,10 @@
                         items: [
                             {
                                 name: "Album TREASURE", go: "GO @sunshineshop",
-                                country: "South Korea 🇰🇷", img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=120",
-                                dateOrdered: "2026-01-10", dateWh: "2026-01-18", dateAdmin: "", dateOnhand: "",
+                                country: "🇰🇷", foreignPrice: 32000, img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=120",
+                                dateOrdered: "2026-01-10", dateWh: "2026-01-18", dateAdmin: "2026-01-25", dateOnhand: "2026-01-27",
                                 paymentType: "Down Payment", price: 150000, sisa: 150000, tax: 3000,
-                                status: "Arrived WH", estimate: "Menunggu jadwal flight", link: "https://shopee.co.id", notes: "Aman"
+                                status: "On Hand", estimate: "Selesai", link: "https://shopee.co.id", notes: "Aman"
                             }
                         ]
                     }
@@ -292,7 +304,7 @@
                         items: [
                             {
                                 name: "Kopi Susu Senopati", go: "Personal",
-                                country: "Others 🌍", img: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=120",
+                                country: "🌍", foreignPrice: 3, img: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=120",
                                 dateOrdered: "2026-01-12", dateWh: "", dateAdmin: "", dateOnhand: "2026-01-12",
                                 paymentType: "Full Payment", price: 45000, sisa: 0, tax: 2000,
                                 status: "On Hand", estimate: "Hari ini", link: "https://gojek.com", notes: "Ngopi"
@@ -304,12 +316,41 @@
         };
 
         function saveData() {
-            localStorage.setItem('myProJastipTrackerDates', JSON.stringify(allData));
+            localStorage.setItem('myProJastipTrackerTotalDays', JSON.stringify(allData));
             renderTrackerView();
         }
 
         function formatRupiah(angka) {
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(angka);
+        }
+
+        function formatForeign(flag, amount) {
+            if (!amount && amount !== 0) return '-';
+            let symbol = '₩';
+            if (flag === '🇰🇷') symbol = '₩ ';
+            else if (flag === '🇯🇵' || flag === '🇨🇳') symbol = '¥ ';
+            else if (flag === '🇹🇭') symbol = '฿ ';
+            else if (flag === '🇵🇭') symbol = '₱ ';
+            else if (flag === '🌍') symbol = '$ ';
+            
+            return symbol + Number(amount).toLocaleString('id-ID');
+        }
+
+        // Fungsi menghitung total hari dari Ordered sampai On Hand (atau hari berjalan)
+        function hitungTotalHari(dateOrdered, dateOnhand) {
+            if (!dateOrdered) return '';
+            const tglOrder = new Date(dateOrdered);
+            let tglAkhir = dateOnhand ? new Date(dateOnhand) : new Date(); // Kalau belum onhand, hitung sampai hari ini
+            
+            const selisihWaktu = tglAkhir - tglOrder;
+            const selisihHari = Math.floor(selisihWaktu / (1000 * 60 * 60 * 24));
+
+            if (selisihHari < 0) return '';
+            if (dateOnhand) {
+                return `<div class="text-[10px] text-pink-600 font-extrabold mt-1">✨ Total: ${selisihHari} hari sampai On Hand</div>`;
+            } else {
+                return `<div class="text-[10px] text-gray-400 italic mt-1">⏳ Berjalan: ${selisihHari} hari</div>`;
+            }
         }
 
         function toggleSisaInput() {
@@ -376,7 +417,8 @@
                 
                 document.getElementById('inputName').value = item.name || '';
                 document.getElementById('inputGo').value = item.go || '';
-                document.getElementById('inputCountry').value = item.country || 'South Korea 🇰🇷';
+                document.getElementById('inputCountry').value = item.country || '🇰🇷';
+                document.getElementById('inputForeignPrice').value = item.foreignPrice || 0;
                 document.getElementById('existingImage').value = item.img || '';
                 
                 document.getElementById('dateOrdered').value = item.dateOrdered || '';
@@ -400,7 +442,7 @@
                 form.reset();
                 document.getElementById('existingImage').value = '';
                 document.getElementById('inputMonth').value = monthKey;
-                document.getElementById('dateOrdered').valueAsDate = new Date(); // Default tanggal hari ini untuk ordered
+                document.getElementById('dateOrdered').valueAsDate = new Date();
                 toggleSisaInput();
             }
             modal.classList.remove('hidden');
@@ -439,6 +481,7 @@
                     name: document.getElementById('inputName').value,
                     go: document.getElementById('inputGo').value,
                     country: document.getElementById('inputCountry').value,
+                    foreignPrice: parseFloat(document.getElementById('inputForeignPrice').value) || 0,
                     img: imgUrl || existingImg || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=120',
                     dateOrdered: document.getElementById('dateOrdered').value,
                     dateWh: document.getElementById('dateWh').value,
@@ -486,7 +529,7 @@
             }
         }
 
-        // Render Tabel Utama (Kolom Foto & Nama Barang Dipisah biar gak nabrak)
+        // Render Tabel Utama dengan Total Hari Perjalanan
         function renderTrackerView() {
             const container = document.getElementById('months-container');
             container.innerHTML = '';
@@ -501,7 +544,7 @@
                 let rowsHTML = '';
 
                 if (monthData.items.length === 0) {
-                    rowsHTML = `<tr><td colspan="12" class="text-center py-6 text-gray-400 italic">Belum ada barang di bulan ini. Yuk tambah! 🛒</td></tr>`;
+                    rowsHTML = `<tr><td colspan="13" class="text-center py-6 text-gray-400 italic">Belum ada barang di bulan ini. Yuk tambah! 🛒</td></tr>`;
                 } else {
                     monthData.items.forEach((item, index) => {
                         let statusColor = item.status === 'On Hand' ? 'bg-blue-100 text-blue-700' :
@@ -514,14 +557,16 @@
 
                         let hargaBersih = item.price + (item.sisa || 0);
                         let totalSemua = hargaBersih + (item.tax || 0);
+                        let hargaAsalFormatted = formatForeign(item.country, item.foreignPrice);
+                        let badgeTotalHari = hitungTotalHari(item.dateOrdered, item.dateOnhand);
 
-                        // Ringkasan Tanggal Progress
                         let infoTanggal = `
                             <div class="text-[11px] text-gray-600 space-y-0.5 whitespace-nowrap">
                                 ${item.dateOrdered ? `<div>🛒 Ord: ${item.dateOrdered}</div>` : ''}
                                 ${item.dateWh ? `<div>📦 WH: ${item.dateWh}</div>` : ''}
                                 ${item.dateAdmin ? `<div>✨ Adm: ${item.dateAdmin}</div>` : ''}
                                 ${item.dateOnhand ? `<div>🎉 Hand: ${item.dateOnhand}</div>` : ''}
+                                ${badgeTotalHari}
                             </div>
                         `;
 
@@ -532,7 +577,8 @@
                                 </td>
                                 <td class="py-4 px-3 font-semibold text-gray-800">${item.name}</td>
                                 <td class="py-4 px-3 font-medium text-indigo-600 text-xs whitespace-nowrap">${item.go}</td>
-                                <td class="py-4 px-3 font-medium text-gray-700 whitespace-nowrap">${item.country}</td>
+                                <td class="py-4 px-3 text-center text-xl">${item.country}</td>
+                                <td class="py-4 px-3 font-medium text-gray-700 whitespace-nowrap">${hargaAsalFormatted}</td>
                                 <td class="py-4 px-3">${infoTanggal}</td>
                                 <td class="py-4 px-3">${payBadge}</td>
                                 <td class="py-4 px-3 font-semibold text-gray-800 whitespace-nowrap">${formatRupiah(hargaBersih)}</td>
@@ -569,14 +615,15 @@
                         </div>
                         <div class="p-6 space-y-6 ${monthData.isOpen ? '' : 'hidden'}">
                             <div class="overflow-x-auto">
-                                <table class="w-full text-left border-collapse min-w-[1200px]">
+                                <table class="w-full text-left border-collapse min-w-[1300px]">
                                     <thead>
                                         <tr class="border-b text-gray-400 text-xs uppercase tracking-wider">
                                             <th class="py-3 px-3 text-center">Foto</th>
                                             <th class="py-3 px-3">Barang</th>
                                             <th class="py-3 px-3">Group Order</th>
-                                            <th class="py-3 px-3">Negara</th>
-                                            <th class="py-3 px-3">Progress Tanggal</th>
+                                            <th class="py-3 px-3 text-center">Negara</th>
+                                            <th class="py-3 px-3">Harga Asal</th>
+                                            <th class="py-3 px-3">Progress Tanggal & Total Hari</th>
                                             <th class="py-3 px-3">Payment</th>
                                             <th class="py-3 px-3">Harga Bersih + Sisa</th>
                                             <th class="py-3 px-3">Tax</th>
