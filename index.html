@@ -125,6 +125,12 @@
             </div>
             
             <form id="itemForm" onsubmit="handleFormSubmit(event)" class="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
+                
+                <div class="flex items-center space-x-2 mt-2">
+    <input type="checkbox" id="inputTaxPaid" class="w-4 h-4 text-pink-600 rounded border-gray-300 focus:ring-pink-500">
+    <label for="inputTaxPaid" class="text-xs font-semibold text-gray-700">Tax udah dibayar (biar gak kehitung sisa tagihan, tapi histori tetap kesimpen)</label>
+</div>
+
                 <input type="hidden" id="editIndex">
                 <input type="hidden" id="editMonthKey">
                 <input type="hidden" id="existingImage">
@@ -406,7 +412,9 @@
             const modal = document.getElementById('itemModal');
             const modalTitle = document.getElementById('modalTitle');
             const form = document.getElementById('itemForm');
-            
+        
+                document.getElementById('inputTaxPaid').checked = Boolean(item.taxPaid);
+
             document.getElementById('editMonthKey').value = monthKey;
             document.getElementById('inputMonth').value = monthKey;
 
@@ -440,7 +448,9 @@
                 modalTitle.innerText = "✨ Tambah Item Baru";
                 document.getElementById('editIndex').value = '';
                 form.reset();
-                document.getElementById('existingImage').value = '';
+        document.getElementById('inputTaxPaid').checked = false;
+
+                        document.getElementById('existingImage').value = '';
                 document.getElementById('inputMonth').value = monthKey;
                 document.getElementById('dateOrdered').valueAsDate = new Date();
                 toggleSisaInput();
@@ -468,6 +478,7 @@
                 catMonths[targetMonth] = { title: monthNames[targetMonth], isOpen: true, items: [] };
             }
 
+
             const fileInput = document.getElementById('inputPhotoFile');
             const existingImg = document.getElementById('existingImage').value;
 
@@ -494,7 +505,9 @@
                     status: document.getElementById('inputStatus').value,
                     estimate: document.getElementById('inputEstimate').value,
                     link: document.getElementById('inputLink').value,
-                    notes: document.getElementById('inputNotes').value
+                    notes: document.getElementById('inputNotes').value,
+                    taxPaid: document.getElementById('inputTaxPaid').checked,
+
                 };
 
                 const oldMonthKey = document.getElementById('editMonthKey').value;
@@ -536,17 +549,29 @@
             let catMonths = allData[currentCategory].months;
 
             for (const [monthKey, monthData] of Object.entries(catMonths)) {
-                let totalBulan = monthData.items.reduce((sum, item) => {
-                    let subTotal = item.price + (item.sisa || 0) + (item.tax || 0);
-                    return sum + subTotal;
-                }, 0);
-                
-                let totalSisaBulan = monthData.items.reduce((sum, item) => {
-    return sum + (item.paymentType === 'Down Payment' ? (item.sisa || 0) : 0);
+                // Total pengeluaran bulanan tetap semua (Payment awal + Sisa DP + Tax)
+let totalBulan = monthData.items.reduce((sum, item) => {
+    let subTotal = (item.price || 0) + (item.sisa || 0) + (item.tax || 0);
+    return sum + subTotal;
+}, 0);
+
+// Sisa tagihan: Sisa DP (jika DP) + Tax (hanya jika belum dibayar / !item.taxPaid)
+let totalSisaBulan = monthData.items.reduce((sum, item) => {
+    let sisaDp = item.paymentType === 'Down Payment' ? (item.sisa || 0) : 0;
+    let sisaTax = !item.taxPaid ? (item.tax || 0) : 0;
+    return sum + sisaDp + sisaTax;
 }, 0);
 
 
+
                 let rowsHTML = '';
+                
+                let taxStatusBadge = item.tax > 0
+    ? (item.taxPaid
+        ? `<span class="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded ml-1">Lunas</span>`
+        : `<span class="text-[10px] font-bold text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded ml-1">Belum</span>`)
+    : '';
+
 
                 if (monthData.items.length === 0) {
                     rowsHTML = `<tr><td colspan="13" class="text-center py-6 text-gray-400 italic">Belum ada barang di bulan ini. Yuk tambah! 🛒</td></tr>`;
