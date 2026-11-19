@@ -10,13 +10,13 @@
 <body class="bg-gray-50 font-sans text-gray-800 pb-20">
 
     <!-- HERO SECTION -->
-    <header class="relative bg-indigo-900 text-white h-[320px] flex items-center justify-center overflow-hidden shadow-lg">
+    <header class="relative bg-indigo-900 text-white h-[300px] flex items-center justify-center overflow-hidden shadow-lg">
         <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&q=80&w=1600" 
              class="absolute inset-0 w-full h-full object-cover opacity-40 filter saturate-150" alt="Hero Background">
         <div class="relative z-10 text-center px-4 max-w-2xl">
             <span class="bg-pink-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Dashboard 2026</span>
             <h1 class="text-3xl md:text-5xl font-extrabold mt-3 mb-2 tracking-tight">Pro Jastip & Expense Tracker 🛒💅</h1>
-            <p class="text-sm md:text-md text-indigo-100 font-medium">Multi-currency, total durasi hari perjalanan, tracking progress, & rekap keuangan!</p>
+            <p class="text-sm md:text-md text-indigo-100 font-medium">Pantau jajan K-Pop & daily life, progress tanggal, histori tax per negara, dan grafik bulanan!</p>
         </div>
     </header>
 
@@ -64,7 +64,7 @@
                     ⬅️ Kembali ke Home
                 </button>
                 <h2 id="tracker-main-title" class="text-xl font-extrabold text-gray-800">Tracker Database</h2>
-                <div class="flex items-center space-x-3">
+                <div class="flex flex-wrap items-center justify-center gap-2">
                     <button onclick="openModal()" class="bg-pink-500 hover:bg-pink-600 text-white font-bold px-4 py-2 rounded-xl text-sm transition shadow-md">
                         ➕ Tambah Item
                     </button>
@@ -86,7 +86,7 @@
                     ⬅️ Kembali ke Database
                 </button>
                 <h2 id="summary-main-title" class="text-xl font-extrabold text-gray-800">📊 Rekap & Grafik Keuangan</h2>
-                <div></div>
+                <div class="w-20 hidden sm:block"></div>
             </div>
 
             <div class="bg-white p-6 rounded-3xl shadow-md border border-gray-100">
@@ -97,14 +97,15 @@
             </div>
 
             <div class="bg-white rounded-3xl shadow-md overflow-hidden border border-gray-100 p-6">
-                <h3 class="font-bold text-gray-700 mb-4">Rincian Total Jajan Per Bulan</h3>
+                <h3 class="font-bold text-gray-700 mb-4">Rincian Total Jajan & Sisa Tagihan Per Bulan</h3>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="border-b text-gray-400 text-xs uppercase tracking-wider">
                                 <th class="py-3 px-4">Bulan</th>
                                 <th class="py-3 px-4">Jumlah Item</th>
-                                <th class="py-3 px-4 text-right">Total Pengeluaran (Termasuk Tax)</th>
+                                <th class="py-3 px-4 text-right">Sisa Belum Dibayar</th>
+                                <th class="py-3 px-4 text-right">Total Pengeluaran</th>
                             </tr>
                         </thead>
                         <tbody id="summary-table-body" class="divide-y divide-gray-100 text-sm"></tbody>
@@ -125,12 +126,6 @@
             </div>
             
             <form id="itemForm" onsubmit="handleFormSubmit(event)" class="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
-                
-                <div class="flex items-center space-x-2 mt-2">
-    <input type="checkbox" id="inputTaxPaid" class="w-4 h-4 text-pink-600 rounded border-gray-300 focus:ring-pink-500">
-    <label for="inputTaxPaid" class="text-xs font-semibold text-gray-700">Tax udah dibayar (biar gak kehitung sisa tagihan, tapi histori tetap kesimpen)</label>
-</div>
-
                 <input type="hidden" id="editIndex">
                 <input type="hidden" id="editMonthKey">
                 <input type="hidden" id="existingImage">
@@ -167,7 +162,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Negara Asal (Bendera)</label>
-                        <select id="inputCountry" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50 font-medium" required>
+                        <select id="inputCountry" onchange="updateTaxHint()" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50 font-medium" required>
                             <option value="🇰🇷">🇰🇷 South Korea (KRW ₩)</option>
                             <option value="🇯🇵">🇯🇵 Japan (JPY ¥)</option>
                             <option value="🇨🇳">🇨🇳 China (CNY ¥)</option>
@@ -188,8 +183,8 @@
                         <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Harga Asal (Mata Uang Asing)</label>
                         <input type="number" step="any" id="inputForeignPrice" placeholder="Contoh: 35000" class="w-full border border-gray-200 rounded-xl p-2.5 text-sm bg-white" required>
                     </div>
-                    <div class="flex items-center text-xs text-gray-500 italic pt-5">
-                        *Otomatis ngikutin mata uang dari bendera negara, bestie! 💅
+                    <div class="flex items-center text-xs text-gray-500 italic pt-4">
+                        *Simbol mata uang otomatis ngikutin bendera negara yang dipilih.
                     </div>
                 </div>
 
@@ -230,24 +225,34 @@
                         <input type="number" id="inputPrice" placeholder="Contoh: 200000" class="w-full border border-gray-200 rounded-xl p-2.5 text-sm bg-white" required>
                     </div>
                     <div id="sisa-container" class="hidden">
-                        <label class="block text-xs font-bold text-pink-600 uppercase mb-1">Sisa Pelunasan (Rp)</label>
+                        <label class="block text-xs font-bold text-pink-600 uppercase mb-1">Sisa DP (Rp)</label>
                         <input type="number" id="inputSisa" placeholder="Contoh: 150000" class="w-full border border-gray-200 rounded-xl p-2.5 text-sm bg-white">
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Tax / Biaya Admin (Rp)</label>
-                        <input type="number" id="inputTax" placeholder="Contoh: 5000" value="0" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50" required>
+                <!-- TAX + STATUS LUNAS TAX + ESTIMASI HISTORI NEGARA -->
+                <div class="bg-amber-50/50 p-4 rounded-2xl border border-amber-100 space-y-2">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Tax / Biaya Admin (Rp)</label>
+                            <input type="number" id="inputTax" placeholder="Contoh: 15000" value="0" class="w-full border border-gray-200 rounded-xl p-2.5 text-sm bg-white" required>
+                            <p id="taxHintText" class="text-[11px] text-indigo-600 font-medium mt-1"></p>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Status Utama Saat Ini</label>
+                            <select id="inputStatus" class="w-full border border-gray-200 rounded-xl p-2.5 text-sm bg-white">
+                                <option value="Ordered">Ordered</option>
+                                <option value="Arrived WH">Arrived WH</option>
+                                <option value="Arrived Admin">Arrived Admin</option>
+                                <option value="On Hand">On Hand</option>
+                            </select>
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Status Utama Saat Ini</label>
-                        <select id="inputStatus" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50">
-                            <option value="Ordered">Ordered</option>
-                            <option value="Arrived WH">Arrived WH</option>
-                            <option value="Arrived Admin">Arrived Admin</option>
-                            <option value="On Hand">On Hand</option>
-                        </select>
+                    <div class="flex items-center space-x-2 pt-1">
+                        <input type="checkbox" id="inputTaxPaid" class="w-4 h-4 text-pink-600 rounded border-gray-300 focus:ring-pink-500">
+                        <label for="inputTaxPaid" class="text-xs font-semibold text-gray-700">
+                            Tax udah dibayar (biar gak kehitung sisa tagihan, tapi histori angkanya tetap kesimpen buat perkiraan negara ini)
+                        </label>
                     </div>
                 </div>
 
@@ -282,7 +287,7 @@
         let currentCategory = 'kpop';
         let myChart = null;
 
-        let allData = JSON.parse(localStorage.getItem('myProJastipTrackerTotalDays')) || {
+        let allData = JSON.parse(localStorage.getItem('myProJastipTrackerComplete')) || {
             kpop: {
                 name: "💿 Jajan K-Pop Tracker",
                 months: {
@@ -292,9 +297,10 @@
                         items: [
                             {
                                 name: "Album TREASURE", go: "GO @sunshineshop",
-                                country: "🇰🇷", foreignPrice: 32000, img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=120",
+                                country: "🇰🇷", foreignPrice: 32000,
+                                img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=120",
                                 dateOrdered: "2026-01-10", dateWh: "2026-01-18", dateAdmin: "2026-01-25", dateOnhand: "2026-01-27",
-                                paymentType: "Down Payment", price: 150000, sisa: 150000, tax: 3000,
+                                paymentType: "Down Payment", price: 150000, sisa: 150000, tax: 15000, taxPaid: false,
                                 status: "On Hand", estimate: "Selesai", link: "https://shopee.co.id", notes: "Aman"
                             }
                         ]
@@ -310,9 +316,10 @@
                         items: [
                             {
                                 name: "Kopi Susu Senopati", go: "Personal",
-                                country: "🌍", foreignPrice: 3, img: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=120",
+                                country: "🌍", foreignPrice: 3,
+                                img: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=120",
                                 dateOrdered: "2026-01-12", dateWh: "", dateAdmin: "", dateOnhand: "2026-01-12",
-                                paymentType: "Full Payment", price: 45000, sisa: 0, tax: 2000,
+                                paymentType: "Full Payment", price: 45000, sisa: 0, tax: 2000, taxPaid: true,
                                 status: "On Hand", estimate: "Hari ini", link: "https://gojek.com", notes: "Ngopi"
                             }
                         ]
@@ -322,40 +329,57 @@
         };
 
         function saveData() {
-            localStorage.setItem('myProJastipTrackerTotalDays', JSON.stringify(allData));
+            localStorage.setItem('myProJastipTrackerComplete', JSON.stringify(allData));
             renderTrackerView();
         }
 
         function formatRupiah(angka) {
-            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(angka);
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(angka || 0);
         }
 
         function formatForeign(flag, amount) {
             if (!amount && amount !== 0) return '-';
-            let symbol = '₩';
+            let symbol = '₩ ';
             if (flag === '🇰🇷') symbol = '₩ ';
             else if (flag === '🇯🇵' || flag === '🇨🇳') symbol = '¥ ';
             else if (flag === '🇹🇭') symbol = '฿ ';
             else if (flag === '🇵🇭') symbol = '₱ ';
             else if (flag === '🌍') symbol = '$ ';
-            
             return symbol + Number(amount).toLocaleString('id-ID');
         }
 
-        // Fungsi menghitung total hari dari Ordered sampai On Hand (atau hari berjalan)
         function hitungTotalHari(dateOrdered, dateOnhand) {
             if (!dateOrdered) return '';
             const tglOrder = new Date(dateOrdered);
-            let tglAkhir = dateOnhand ? new Date(dateOnhand) : new Date(); // Kalau belum onhand, hitung sampai hari ini
-            
-            const selisihWaktu = tglAkhir - tglOrder;
-            const selisihHari = Math.floor(selisihWaktu / (1000 * 60 * 60 * 24));
+            const tglAkhir = dateOnhand ? new Date(dateOnhand) : new Date();
+            const selisihHari = Math.floor((tglAkhir - tglOrder) / (1000 * 60 * 60 * 24));
 
             if (selisihHari < 0) return '';
             if (dateOnhand) {
                 return `<div class="text-[10px] text-pink-600 font-extrabold mt-1">✨ Total: ${selisihHari} hari sampai On Hand</div>`;
+            }
+            return `<div class="text-[10px] text-gray-400 italic mt-1">⏳ Berjalan: ${selisihHari} hari</div>`;
+        }
+
+        // Hitung rata-rata tax dari histori negara yang sama di kategori aktif
+        function updateTaxHint() {
+            const flag = document.getElementById('inputCountry').value;
+            const hintEl = document.getElementById('taxHintText');
+            let taxes = [];
+
+            for (const monthData of Object.values(allData[currentCategory].months)) {
+                monthData.items.forEach(item => {
+                    if (item.country === flag && (item.tax || 0) > 0) {
+                        taxes.push(Number(item.tax));
+                    }
+                });
+            }
+
+            if (taxes.length === 0) {
+                hintEl.innerText = `💡 Belum ada histori tax untuk ${flag} di tracker ini.`;
             } else {
-                return `<div class="text-[10px] text-gray-400 italic mt-1">⏳ Berjalan: ${selisihHari} hari</div>`;
+                const avg = Math.round(taxes.reduce((a, b) => a + b, 0) / taxes.length);
+                hintEl.innerText = `💡 Perkiraan tax ${flag} (rata-rata dari ${taxes.length} histori): ~${formatRupiah(avg)}`;
             }
         }
 
@@ -412,9 +436,7 @@
             const modal = document.getElementById('itemModal');
             const modalTitle = document.getElementById('modalTitle');
             const form = document.getElementById('itemForm');
-        
-                document.getElementById('inputTaxPaid').checked = Boolean(item.taxPaid);
-
+            
             document.getElementById('editMonthKey').value = monthKey;
             document.getElementById('inputMonth').value = monthKey;
 
@@ -438,23 +460,23 @@
                 document.getElementById('inputPrice').value = item.price || 0;
                 document.getElementById('inputSisa').value = item.sisa || 0;
                 document.getElementById('inputTax').value = item.tax || 0;
+                document.getElementById('inputTaxPaid').checked = Boolean(item.taxPaid);
                 document.getElementById('inputStatus').value = item.status || 'Ordered';
                 document.getElementById('inputEstimate').value = item.estimate || '';
                 document.getElementById('inputLink').value = item.link || '';
                 document.getElementById('inputNotes').value = item.notes || '';
-                
-                toggleSisaInput();
             } else {
                 modalTitle.innerText = "✨ Tambah Item Baru";
                 document.getElementById('editIndex').value = '';
                 form.reset();
-        document.getElementById('inputTaxPaid').checked = false;
-
-                        document.getElementById('existingImage').value = '';
+                document.getElementById('existingImage').value = '';
                 document.getElementById('inputMonth').value = monthKey;
+                document.getElementById('inputTaxPaid').checked = false;
                 document.getElementById('dateOrdered').valueAsDate = new Date();
-                toggleSisaInput();
             }
+
+            toggleSisaInput();
+            updateTaxHint();
             modal.classList.remove('hidden');
         }
 
@@ -478,7 +500,6 @@
                 catMonths[targetMonth] = { title: monthNames[targetMonth], isOpen: true, items: [] };
             }
 
-
             const fileInput = document.getElementById('inputPhotoFile');
             const existingImg = document.getElementById('existingImage').value;
 
@@ -487,6 +508,7 @@
                 const priceVal = parseFloat(document.getElementById('inputPrice').value) || 0;
                 const sisaVal = payType === 'Down Payment' ? (parseFloat(document.getElementById('inputSisa').value) || 0) : 0;
                 const taxVal = parseFloat(document.getElementById('inputTax').value) || 0;
+                const taxPaidVal = document.getElementById('inputTaxPaid').checked;
 
                 const newItem = {
                     name: document.getElementById('inputName').value,
@@ -502,12 +524,11 @@
                     price: priceVal,
                     sisa: sisaVal,
                     tax: taxVal,
+                    taxPaid: taxPaidVal,
                     status: document.getElementById('inputStatus').value,
                     estimate: document.getElementById('inputEstimate').value,
                     link: document.getElementById('inputLink').value,
-                    notes: document.getElementById('inputNotes').value,
-                    taxPaid: document.getElementById('inputTaxPaid').checked,
-
+                    notes: document.getElementById('inputNotes').value
                 };
 
                 const oldMonthKey = document.getElementById('editMonthKey').value;
@@ -542,39 +563,36 @@
             }
         }
 
-        // Render Tabel Utama dengan Total Hari Perjalanan
+        // Hitung total pengeluaran & sisa tagihan suatu bulan
+        function hitungRingkasanBulan(items) {
+            let totalBulan = 0;
+            let totalSisaBulan = 0;
+
+            items.forEach(item => {
+                const price = Number(item.price) || 0;
+                const sisaDp = item.paymentType === 'Down Payment' ? (Number(item.sisa) || 0) : 0;
+                const tax = Number(item.tax) || 0;
+                const sisaTax = !item.taxPaid ? tax : 0;
+
+                totalBulan += price + sisaDp + tax;
+                totalSisaBulan += sisaDp + sisaTax;
+            });
+
+            return { totalBulan, totalSisaBulan };
+        }
+
+        // Render Tabel Utama
         function renderTrackerView() {
             const container = document.getElementById('months-container');
             container.innerHTML = '';
             let catMonths = allData[currentCategory].months;
 
             for (const [monthKey, monthData] of Object.entries(catMonths)) {
-                // Total pengeluaran bulanan tetap semua (Payment awal + Sisa DP + Tax)
-let totalBulan = monthData.items.reduce((sum, item) => {
-    let subTotal = (item.price || 0) + (item.sisa || 0) + (item.tax || 0);
-    return sum + subTotal;
-}, 0);
-
-// Sisa tagihan: Sisa DP (jika DP) + Tax (hanya jika belum dibayar / !item.taxPaid)
-let totalSisaBulan = monthData.items.reduce((sum, item) => {
-    let sisaDp = item.paymentType === 'Down Payment' ? (item.sisa || 0) : 0;
-    let sisaTax = !item.taxPaid ? (item.tax || 0) : 0;
-    return sum + sisaDp + sisaTax;
-}, 0);
-
-
-
+                const { totalBulan, totalSisaBulan } = hitungRingkasanBulan(monthData.items);
                 let rowsHTML = '';
-                
-                let taxStatusBadge = item.tax > 0
-    ? (item.taxPaid
-        ? `<span class="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded ml-1">Lunas</span>`
-        : `<span class="text-[10px] font-bold text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded ml-1">Belum</span>`)
-    : '';
-
 
                 if (monthData.items.length === 0) {
-                    rowsHTML = `<tr><td colspan="13" class="text-center py-6 text-gray-400 italic">Belum ada barang di bulan ini. Yuk tambah! 🛒</td></tr>`;
+                    rowsHTML = `<tr><td colspan="14" class="text-center py-6 text-gray-400 italic">Belum ada barang di bulan ini. Yuk tambah! 🛒</td></tr>`;
                 } else {
                     monthData.items.forEach((item, index) => {
                         let statusColor = item.status === 'On Hand' ? 'bg-blue-100 text-blue-700' :
@@ -585,10 +603,16 @@ let totalSisaBulan = monthData.items.reduce((sum, item) => {
                             ? `<span class="px-2.5 py-1 bg-green-100 text-green-700 rounded-lg text-xs font-bold">Full Payment</span>`
                             : `<span class="px-2.5 py-1 bg-yellow-100 text-yellow-700 rounded-lg text-xs font-bold">DP</span><p class="text-xs text-gray-500 mt-1">Sisa: ${formatRupiah(item.sisa || 0)}</p>`;
 
-                        let hargaBersih = item.price + (item.sisa || 0);
-                        let totalSemua = hargaBersih + (item.tax || 0);
+                        let hargaBersih = (Number(item.price) || 0) + (item.paymentType === 'Down Payment' ? (Number(item.sisa) || 0) : 0);
+                        let totalSemua = hargaBersih + (Number(item.tax) || 0);
                         let hargaAsalFormatted = formatForeign(item.country, item.foreignPrice);
                         let badgeTotalHari = hitungTotalHari(item.dateOrdered, item.dateOnhand);
+
+                        let taxStatusBadge = (Number(item.tax) || 0) > 0
+                            ? (item.taxPaid
+                                ? `<span class="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded ml-1">Lunas</span>`
+                                : `<span class="text-[10px] font-bold text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded ml-1">Belum</span>`)
+                            : '';
 
                         let infoTanggal = `
                             <div class="text-[11px] text-gray-600 space-y-0.5 whitespace-nowrap">
@@ -612,7 +636,7 @@ let totalSisaBulan = monthData.items.reduce((sum, item) => {
                                 <td class="py-4 px-3">${infoTanggal}</td>
                                 <td class="py-4 px-3">${payBadge}</td>
                                 <td class="py-4 px-3 font-semibold text-gray-800 whitespace-nowrap">${formatRupiah(hargaBersih)}</td>
-                                <td class="py-4 px-3 text-gray-600 whitespace-nowrap">${formatRupiah(item.tax || 0)}</td>
+                                <td class="py-4 px-3 text-gray-600 whitespace-nowrap">${formatRupiah(item.tax || 0)}${taxStatusBadge}</td>
                                 <td class="py-4 px-3 font-extrabold text-pink-600 whitespace-nowrap">${formatRupiah(totalSemua)}</td>
                                 <td class="py-4 px-3"><span class="px-3 py-1 ${statusColor} rounded-full text-xs font-semibold whitespace-nowrap">${item.status}</span></td>
                                 <td class="py-4 px-3 text-gray-600 text-xs">
@@ -645,7 +669,7 @@ let totalSisaBulan = monthData.items.reduce((sum, item) => {
                         </div>
                         <div class="p-6 space-y-6 ${monthData.isOpen ? '' : 'hidden'}">
                             <div class="overflow-x-auto">
-                                <table class="w-full text-left border-collapse min-w-[1300px]">
+                                <table class="w-full text-left border-collapse min-w-[1350px]">
                                     <thead>
                                         <tr class="border-b text-gray-400 text-xs uppercase tracking-wider">
                                             <th class="py-3 px-3 text-center">Foto</th>
@@ -667,16 +691,16 @@ let totalSisaBulan = monthData.items.reduce((sum, item) => {
                                     <tbody class="divide-y divide-gray-100">${rowsHTML}</tbody>
                                 </table>
                             </div>
-                           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-gray-50 p-4 rounded-xl border border-gray-200 gap-3">
-    <div>
-        <span class="font-bold text-gray-700 block">✨ Total Pengeluaran ${monthData.title.replace('🗓️ ', '')}:</span>
-        ${totalSisaBulan > 0 
-            ? `<span class="text-xs font-semibold text-amber-600 bg-amber-100 px-2.5 py-1 rounded-lg inline-block mt-1.5">⏳ Sisa belum dilunasi (DP): ${formatRupiah(totalSisaBulan)}</span>` 
-            : `<span class="text-xs font-semibold text-emerald-600 bg-emerald-100 px-2.5 py-1 rounded-lg inline-block mt-1.5">✅ Semua item bulan ini udah lunas!</span>`
-        }
-    </div>
-    <span class="font-extrabold text-xl text-pink-600">${formatRupiah(totalBulan)}</span>
-</div>
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-gray-50 p-4 rounded-xl border border-gray-200 gap-3">
+                                <div>
+                                    <span class="font-bold text-gray-700 block">✨ Total Pengeluaran ${monthData.title.replace('🗓️ ', '')}:</span>
+                                    ${totalSisaBulan > 0
+                                        ? `<span class="text-xs font-semibold text-amber-700 bg-amber-100 px-2.5 py-1 rounded-lg inline-block mt-1.5">⏳ Sisa tagihan belum dibayar (DP + Tax belum lunas): ${formatRupiah(totalSisaBulan)}</span>`
+                                        : `<span class="text-xs font-semibold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-lg inline-block mt-1.5">✅ Semua tagihan bulan ini udah lunas!</span>`
+                                    }
+                                </div>
+                                <span class="font-extrabold text-xl text-pink-600">${formatRupiah(totalBulan)}</span>
+                            </div>
                         </div>
                     </section>
                 `;
@@ -693,10 +717,7 @@ let totalSisaBulan = monthData.items.reduce((sum, item) => {
             let dataTotals = [];
 
             for (const [monthKey, monthData] of Object.entries(catMonths)) {
-                let totalBulan = monthData.items.reduce((sum, item) => {
-                    return sum + item.price + (item.sisa || 0) + (item.tax || 0);
-                }, 0);
-
+                const { totalBulan, totalSisaBulan } = hitungRingkasanBulan(monthData.items);
                 let cleanMonthName = monthData.title.replace('🗓️ ', '');
                 labels.push(cleanMonthName);
                 dataTotals.push(totalBulan);
@@ -705,6 +726,7 @@ let totalSisaBulan = monthData.items.reduce((sum, item) => {
                     <tr class="border-b border-gray-100 hover:bg-gray-50">
                         <td class="py-3 px-4 font-semibold text-gray-800">${monthData.title}</td>
                         <td class="py-3 px-4 text-gray-600">${monthData.items.length} Item</td>
+                        <td class="py-3 px-4 text-right font-semibold ${totalSisaBulan > 0 ? 'text-amber-600' : 'text-emerald-600'}">${formatRupiah(totalSisaBulan)}</td>
                         <td class="py-3 px-4 text-right font-extrabold text-pink-600">${formatRupiah(totalBulan)}</td>
                     </tr>
                 `;
