@@ -540,6 +540,11 @@
                     let subTotal = item.price + (item.sisa || 0) + (item.tax || 0);
                     return sum + subTotal;
                 }, 0);
+                
+                let totalSisaBulan = monthData.items.reduce((sum, item) => {
+    return sum + (item.paymentType === 'Down Payment' ? (item.sisa || 0) : 0);
+}, 0);
+
 
                 let rowsHTML = '';
 
@@ -637,10 +642,16 @@
                                     <tbody class="divide-y divide-gray-100">${rowsHTML}</tbody>
                                 </table>
                             </div>
-                            <div class="flex justify-between items-center bg-gray-50 p-4 rounded-xl border border-gray-200">
-                                <span class="font-bold text-gray-700">✨ Total Pengeluaran ${monthData.title.replace('🗓️ ', '')}:</span>
-                                <span class="font-extrabold text-xl text-pink-600">${formatRupiah(totalBulan)}</span>
-                            </div>
+                           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-gray-50 p-4 rounded-xl border border-gray-200 gap-3">
+    <div>
+        <span class="font-bold text-gray-700 block">✨ Total Pengeluaran ${monthData.title.replace('🗓️ ', '')}:</span>
+        ${totalSisaBulan > 0 
+            ? `<span class="text-xs font-semibold text-amber-600 bg-amber-100 px-2.5 py-1 rounded-lg inline-block mt-1.5">⏳ Sisa belum dilunasi (DP): ${formatRupiah(totalSisaBulan)}</span>` 
+            : `<span class="text-xs font-semibold text-emerald-600 bg-emerald-100 px-2.5 py-1 rounded-lg inline-block mt-1.5">✅ Semua item bulan ini udah lunas!</span>`
+        }
+    </div>
+    <span class="font-extrabold text-xl text-pink-600">${formatRupiah(totalBulan)}</span>
+</div>
                         </div>
                     </section>
                 `;
