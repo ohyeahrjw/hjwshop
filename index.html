@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pro Jastip & Expense Tracker 🛍️✨</title>
+    <title>Pro Jastip & Daily Expense Tracker 🛍️✨</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -15,8 +15,8 @@
              class="absolute inset-0 w-full h-full object-cover opacity-40 filter saturate-150" alt="Hero Background">
         <div class="relative z-10 text-center px-4 max-w-2xl">
             <span class="bg-pink-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Dashboard 2026</span>
-            <h1 class="text-3xl md:text-5xl font-extrabold mt-3 mb-2 tracking-tight">Pro Jastip & Expense Tracker 🛒💅</h1>
-            <p class="text-sm md:text-md text-indigo-100 font-medium">Pantau jajan K-Pop & daily life, progress tanggal, histori tax per negara, dan grafik bulanan!</p>
+            <h1 class="text-3xl md:text-5xl font-extrabold mt-3 mb-2 tracking-tight">Pro Jastip & Daily Tracker 🛒💅</h1>
+            <p class="text-sm md:text-md text-indigo-100 font-medium">Jajan K-Pop full detail & Jajan Daily Life simpel sat-set, lengkap dengan rekap grafik bulanan!</p>
         </div>
     </header>
 
@@ -36,7 +36,7 @@
                     </div>
                     <div class="p-8 text-center space-y-3">
                         <h3 class="text-2xl font-extrabold text-gray-800">Jajan K-Pop Tracker</h3>
-                        <p class="text-gray-500 text-sm">Album, photocard, Group Order (GO), merch, dan jastip Asia.</p>
+                        <p class="text-gray-500 text-sm">Album, photocard, Group Order (GO), DP/Fullpay, histori tax per negara, & progress tanggal.</p>
                         <span class="inline-block mt-4 bg-pink-50 text-pink-600 font-bold px-6 py-2.5 rounded-full text-sm group-hover:bg-pink-500 group-hover:text-white transition">Buka Tracker K-Pop ➔</span>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                     </div>
                     <div class="p-8 text-center space-y-3">
                         <h3 class="text-2xl font-extrabold text-gray-800">Jajan Daily Life</h3>
-                        <p class="text-gray-500 text-sm">Ngopi, jajan shopee harian, skincare, dan printilan hidup.</p>
+                        <p class="text-gray-500 text-sm">Jajanan & kebutuhan lokal harian: Full Checkout / COD, harga bersih & total, plus status kirim.</p>
                         <span class="inline-block mt-4 bg-emerald-50 text-emerald-600 font-bold px-6 py-2.5 rounded-full text-sm group-hover:bg-emerald-500 group-hover:text-white transition">Buka Tracker Daily ➔</span>
                     </div>
                 </div>
@@ -97,14 +97,14 @@
             </div>
 
             <div class="bg-white rounded-3xl shadow-md overflow-hidden border border-gray-100 p-6">
-                <h3 class="font-bold text-gray-700 mb-4">Rincian Total Jajan & Sisa Tagihan Per Bulan</h3>
+                <h3 class="font-bold text-gray-700 mb-4">Rincian Pengeluaran Per Bulan</h3>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="border-b text-gray-400 text-xs uppercase tracking-wider">
                                 <th class="py-3 px-4">Bulan</th>
                                 <th class="py-3 px-4">Jumlah Item</th>
-                                <th class="py-3 px-4 text-right">Sisa Belum Dibayar</th>
+                                <th id="summary-extra-th" class="py-3 px-4 text-right">Sisa Belum Dibayar</th>
                                 <th class="py-3 px-4 text-right">Total Pengeluaran</th>
                             </tr>
                         </thead>
@@ -117,22 +117,22 @@
     </main>
 
 
-    <!-- ================= MODAL FORM TAMBAH / EDIT BARANG ================= -->
-    <div id="itemModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <!-- ================= MODAL FORM K-POP (LENGKAP) ================= -->
+    <div id="kpopModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden transform transition-all">
             <div class="bg-gradient-to-r from-pink-500 to-purple-600 p-5 text-white flex justify-between items-center">
-                <h3 id="modalTitle" class="font-bold text-lg">✨ Tambah Item Belanjaan</h3>
+                <h3 id="kpopModalTitle" class="font-bold text-lg">✨ Tambah Item K-Pop</h3>
                 <button onclick="closeModal()" class="text-white hover:bg-white/20 rounded-full w-8 h-8 flex items-center justify-center font-bold">✕</button>
             </div>
             
-            <form id="itemForm" onsubmit="handleFormSubmit(event)" class="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
-                <input type="hidden" id="editIndex">
-                <input type="hidden" id="editMonthKey">
-                <input type="hidden" id="existingImage">
+            <form id="kpopForm" onsubmit="handleKpopSubmit(event)" class="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
+                <input type="hidden" id="kpopEditIndex">
+                <input type="hidden" id="kpopEditMonthKey">
+                <input type="hidden" id="kpopExistingImage">
 
                 <div>
                     <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Pilih Bulan Transaksi</label>
-                    <select id="inputMonth" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50 font-medium" required>
+                    <select id="kpopInputMonth" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50 font-medium" required>
                         <option value="january">Januari 2026</option>
                         <option value="february">Februari 2026</option>
                         <option value="march">Maret 2026</option>
@@ -151,18 +151,18 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Nama Barang</label>
-                        <input type="text" id="inputName" placeholder="Contoh: Album TREASURE" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50" required>
+                        <input type="text" id="kpopInputName" placeholder="Contoh: Album TREASURE" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50" required>
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Group Order ( GO )</label>
-                        <input type="text" id="inputGo" placeholder="Contoh: GO @sunshineshop" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50" required>
+                        <input type="text" id="kpopInputGo" placeholder="Contoh: GO @sunshineshop" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50" required>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Negara Asal (Bendera)</label>
-                        <select id="inputCountry" onchange="updateTaxHint()" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50 font-medium" required>
+                        <select id="kpopInputCountry" onchange="updateTaxHint()" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50 font-medium" required>
                             <option value="🇰🇷">🇰🇷 South Korea (KRW ₩)</option>
                             <option value="🇯🇵">🇯🇵 Japan (JPY ¥)</option>
                             <option value="🇨🇳">🇨🇳 China (CNY ¥)</option>
@@ -173,74 +173,70 @@
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Upload Foto (Galeri HP)</label>
-                        <input type="file" id="inputPhotoFile" accept="image/*" class="w-full border border-gray-200 rounded-xl p-2 text-xs bg-gray-50 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-pink-50 file:text-pink-700 hover:file:bg-pink-100">
+                        <input type="file" id="kpopInputPhotoFile" accept="image/*" class="w-full border border-gray-200 rounded-xl p-2 text-xs bg-gray-50 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-pink-50 file:text-pink-700 hover:file:bg-pink-100">
                     </div>
                 </div>
 
-                <!-- HARGA ASAL & CURRENCY -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-2xl border border-gray-100">
                     <div>
                         <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Harga Asal (Mata Uang Asing)</label>
-                        <input type="number" step="any" id="inputForeignPrice" placeholder="Contoh: 35000" class="w-full border border-gray-200 rounded-xl p-2.5 text-sm bg-white" required>
+                        <input type="number" step="any" id="kpopInputForeignPrice" placeholder="Contoh: 35000" class="w-full border border-gray-200 rounded-xl p-2.5 text-sm bg-white" required>
                     </div>
                     <div class="flex items-center text-xs text-gray-500 italic pt-4">
                         *Simbol mata uang otomatis ngikutin bendera negara yang dipilih.
                     </div>
                 </div>
 
-                <!-- SECTION TRACKING TANGGAL PROGRESS -->
                 <div class="bg-indigo-50/50 p-4 rounded-2xl border border-indigo-100 space-y-3">
                     <label class="block text-xs font-extrabold text-indigo-900 uppercase tracking-wider">📅 Tracking Tanggal Progress Status</label>
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                         <div>
                             <label class="block text-[10px] font-bold text-gray-600 uppercase mb-1">1. Ordered</label>
-                            <input type="date" id="dateOrdered" class="w-full border border-gray-200 rounded-lg p-2 text-xs bg-white">
+                            <input type="date" id="kpopDateOrdered" class="w-full border border-gray-200 rounded-lg p-2 text-xs bg-white">
                         </div>
                         <div>
                             <label class="block text-[10px] font-bold text-gray-600 uppercase mb-1">2. Arrived WH</label>
-                            <input type="date" id="dateWh" class="w-full border border-gray-200 rounded-lg p-2 text-xs bg-white">
+                            <input type="date" id="kpopDateWh" class="w-full border border-gray-200 rounded-lg p-2 text-xs bg-white">
                         </div>
                         <div>
                             <label class="block text-[10px] font-bold text-gray-600 uppercase mb-1">3. Arrived Admin</label>
-                            <input type="date" id="dateAdmin" class="w-full border border-gray-200 rounded-lg p-2 text-xs bg-white">
+                            <input type="date" id="kpopDateAdmin" class="w-full border border-gray-200 rounded-lg p-2 text-xs bg-white">
                         </div>
                         <div>
                             <label class="block text-[10px] font-bold text-gray-600 uppercase mb-1">4. On Hand</label>
-                            <input type="date" id="dateOnhand" class="w-full border border-gray-200 rounded-lg p-2 text-xs bg-white">
+                            <input type="date" id="kpopDateOnhand" class="w-full border border-gray-200 rounded-lg p-2 text-xs bg-white">
                         </div>
                     </div>
                 </div>
 
-                <!-- SECTION PAYMENT RUPIAH -->
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-gray-50 p-4 rounded-2xl border border-gray-100">
                     <div>
                         <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Tipe Payment (IDR)</label>
-                        <select id="inputPaymentType" onchange="toggleSisaInput()" class="w-full border border-gray-200 rounded-xl p-2.5 text-sm bg-white">
+                        <select id="kpopInputPaymentType" onchange="toggleSisaInput()" class="w-full border border-gray-200 rounded-xl p-2.5 text-sm bg-white">
                             <option value="Full Payment">Full Payment</option>
                             <option value="Down Payment">Down Payment (DP)</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Nominal Payment (Rp)</label>
-                        <input type="number" id="inputPrice" placeholder="Contoh: 200000" class="w-full border border-gray-200 rounded-xl p-2.5 text-sm bg-white" required>
+                        <input type="number" id="kpopInputPrice" placeholder="Contoh: 200000" class="w-full border border-gray-200 rounded-xl p-2.5 text-sm bg-white" required>
                     </div>
-                    <div id="sisa-container" class="hidden">
+                    <div id="kpopSisaContainer" class="hidden">
                         <label class="block text-xs font-bold text-pink-600 uppercase mb-1">Sisa DP (Rp)</label>
-                        <input type="number" id="inputSisa" placeholder="Contoh: 150000" class="w-full border border-gray-200 rounded-xl p-2.5 text-sm bg-white">
+                        <input type="number" id="kpopInputSisa" placeholder="Contoh: 150000" class="w-full border border-gray-200 rounded-xl p-2.5 text-sm bg-white">
                     </div>
                 </div>
 
-                <!-- TAX + STATUS LUNAS TAX + ESTIMASI HISTORI NEGARA -->
                 <div class="bg-amber-50/50 p-4 rounded-2xl border border-amber-100 space-y-2">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Tax / Biaya Admin (Rp)</label>
-                            <input type="number" id="inputTax" placeholder="Contoh: 15000" value="0" class="w-full border border-gray-200 rounded-xl p-2.5 text-sm bg-white" required>
-                            <p id="taxHintText" class="text-[11px] text-indigo-600 font-medium mt-1"></p>
+                            <input type="number" id="kpopInputTax" placeholder="Contoh: 15000" value="0" class="w-full border border-gray-200 rounded-xl p-2.5 text-sm bg-white" required>
+                            <p id="kpopTaxHintText" class="text-[11px] text-indigo-600 font-medium mt-1"></p>
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Status Utama Saat Ini</label>
-                            <select id="inputStatus" class="w-full border border-gray-200 rounded-xl p-2.5 text-sm bg-white">
+                            <select id="kpopInputStatus" class="w-full border border-gray-200 rounded-xl p-2.5 text-sm bg-white">
                                 <option value="Ordered">Ordered</option>
                                 <option value="Arrived WH">Arrived WH</option>
                                 <option value="Arrived Admin">Arrived Admin</option>
@@ -249,8 +245,8 @@
                         </div>
                     </div>
                     <div class="flex items-center space-x-2 pt-1">
-                        <input type="checkbox" id="inputTaxPaid" class="w-4 h-4 text-pink-600 rounded border-gray-300 focus:ring-pink-500">
-                        <label for="inputTaxPaid" class="text-xs font-semibold text-gray-700">
+                        <input type="checkbox" id="kpopInputTaxPaid" class="w-4 h-4 text-pink-600 rounded border-gray-300 focus:ring-pink-500">
+                        <label for="kpopInputTaxPaid" class="text-xs font-semibold text-gray-700">
                             Tax udah dibayar (biar gak kehitung sisa tagihan, tapi histori angkanya tetap kesimpen buat perkiraan negara ini)
                         </label>
                     </div>
@@ -259,22 +255,113 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Estimasi / Info Durasi</label>
-                        <input type="text" id="inputEstimate" placeholder="Contoh: Menunggu batch cargo" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50" required>
+                        <input type="text" id="kpopInputEstimate" placeholder="Contoh: Menunggu batch cargo" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50" required>
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Link Checkout</label>
-                        <input type="url" id="inputLink" placeholder="https://shopee.co.id/..." class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50" required>
+                        <input type="url" id="kpopInputLink" placeholder="https://shopee.co.id/..." class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50" required>
                     </div>
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Notes / Catatan</label>
-                    <input type="text" id="inputNotes" placeholder="Contoh: Kena delay customs batch 3" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50">
+                    <input type="text" id="kpopInputNotes" placeholder="Contoh: Kena delay customs batch 3" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50">
                 </div>
 
                 <div class="pt-3">
                     <button type="submit" class="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold py-3 rounded-xl shadow-md hover:opacity-95 transition">
-                        Simpan Data Barang 🛒
+                        Simpan Data K-Pop 🛒
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- ================= MODAL FORM DAILY LIFE (SIMPEL) ================= -->
+    <div id="dailyModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden transform transition-all">
+            <div class="bg-gradient-to-r from-emerald-500 to-teal-600 p-5 text-white flex justify-between items-center">
+                <h3 id="dailyModalTitle" class="font-bold text-lg">☕ Tambah Jajan Daily Life</h3>
+                <button onclick="closeModal()" class="text-white hover:bg-white/20 rounded-full w-8 h-8 flex items-center justify-center font-bold">✕</button>
+            </div>
+            
+            <form id="dailyForm" onsubmit="handleDailySubmit(event)" class="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
+                <input type="hidden" id="dailyEditIndex">
+                <input type="hidden" id="dailyEditMonthKey">
+                <input type="hidden" id="dailyExistingImage">
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Pilih Bulan</label>
+                    <select id="dailyInputMonth" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50 font-medium" required>
+                        <option value="january">Januari 2026</option>
+                        <option value="february">Februari 2026</option>
+                        <option value="march">Maret 2026</option>
+                        <option value="april">April 2026</option>
+                        <option value="may">Mei 2026</option>
+                        <option value="june">Juni 2026</option>
+                        <option value="july">Juli 2026</option>
+                        <option value="august">Agustus 2026</option>
+                        <option value="september">September 2026</option>
+                        <option value="october">Oktober 2026</option>
+                        <option value="november">November 2026</option>
+                        <option value="december">Desember 2026</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Barang / Jajanan</label>
+                    <input type="text" id="dailyInputName" placeholder="Contoh: Kopi Susu / Sabun Cuci Muka" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50" required>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Foto (Galeri HP)</label>
+                        <input type="file" id="dailyInputPhotoFile" accept="image/*" class="w-full border border-gray-200 rounded-xl p-2 text-xs bg-gray-50 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Link Barang (Opsional)</label>
+                        <input type="url" id="dailyInputLink" placeholder="https://shopee.co.id/..." class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Payment</label>
+                        <select id="dailyInputPayment" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50 font-medium">
+                            <option value="Full Checkout">Full Checkout</option>
+                            <option value="COD">COD</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Status</label>
+                        <select id="dailyInputStatus" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50 font-medium">
+                            <option value="Ordered">Ordered</option>
+                            <option value="Jasa Kirim">Jasa Kirim</option>
+                            <option value="On Hand">On Hand</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Harga Bersih (Rp)</label>
+                        <input type="number" id="dailyInputCleanPrice" placeholder="Contoh: 25000" class="w-full border border-gray-200 rounded-xl p-2.5 text-sm bg-white" required>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-emerald-700 uppercase mb-1">Total Harga (Rp)</label>
+                        <input type="number" id="dailyInputTotalPrice" placeholder="Contoh: 32000 (termasuk ongkir)" class="w-full border border-gray-200 rounded-xl p-2.5 text-sm bg-white" required>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Notes</label>
+                    <input type="text" id="dailyInputNotes" placeholder="Contoh: Pakai voucher gratis ongkir" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-gray-50">
+                </div>
+
+                <div class="pt-3">
+                    <button type="submit" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold py-3 rounded-xl shadow-md hover:opacity-95 transition">
+                        Simpan Jajan Daily ☕
                     </button>
                 </div>
             </form>
@@ -287,7 +374,7 @@
         let currentCategory = 'kpop';
         let myChart = null;
 
-        let allData = JSON.parse(localStorage.getItem('myProJastipTrackerComplete')) || {
+        let allData = JSON.parse(localStorage.getItem('myProJastipAndDailyTracker')) || {
             kpop: {
                 name: "💿 Jajan K-Pop Tracker",
                 months: {
@@ -315,12 +402,14 @@
                         isOpen: true,
                         items: [
                             {
-                                name: "Kopi Susu Senopati", go: "Personal",
-                                country: "🌍", foreignPrice: 3,
+                                name: "Kopi Susu & Roti",
                                 img: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=120",
-                                dateOrdered: "2026-01-12", dateWh: "", dateAdmin: "", dateOnhand: "2026-01-12",
-                                paymentType: "Full Payment", price: 45000, sisa: 0, tax: 2000, taxPaid: true,
-                                status: "On Hand", estimate: "Hari ini", link: "https://gojek.com", notes: "Ngopi"
+                                link: "https://shopee.co.id",
+                                payment: "Full Checkout",
+                                cleanPrice: 35000,
+                                totalPrice: 42000,
+                                status: "On Hand",
+                                notes: "Jajan siang"
                             }
                         ]
                     }
@@ -329,7 +418,7 @@
         };
 
         function saveData() {
-            localStorage.setItem('myProJastipTrackerComplete', JSON.stringify(allData));
+            localStorage.setItem('myProJastipAndDailyTracker', JSON.stringify(allData));
             renderTrackerView();
         }
 
@@ -361,13 +450,12 @@
             return `<div class="text-[10px] text-gray-400 italic mt-1">⏳ Berjalan: ${selisihHari} hari</div>`;
         }
 
-        // Hitung rata-rata tax dari histori negara yang sama di kategori aktif
         function updateTaxHint() {
-            const flag = document.getElementById('inputCountry').value;
-            const hintEl = document.getElementById('taxHintText');
+            const flag = document.getElementById('kpopInputCountry').value;
+            const hintEl = document.getElementById('kpopTaxHintText');
             let taxes = [];
 
-            for (const monthData of Object.values(allData[currentCategory].months)) {
+            for (const monthData of Object.values(allData.kpop.months)) {
                 monthData.items.forEach(item => {
                     if (item.country === flag && (item.tax || 0) > 0) {
                         taxes.push(Number(item.tax));
@@ -376,23 +464,23 @@
             }
 
             if (taxes.length === 0) {
-                hintEl.innerText = `💡 Belum ada histori tax untuk ${flag} di tracker ini.`;
+                hintEl.innerText = `💡 Belum ada histori tax untuk ${flag}.`;
             } else {
                 const avg = Math.round(taxes.reduce((a, b) => a + b, 0) / taxes.length);
-                hintEl.innerText = `💡 Perkiraan tax ${flag} (rata-rata dari ${taxes.length} histori): ~${formatRupiah(avg)}`;
+                hintEl.innerText = `💡 Perkiraan tax ${flag} (rata-rata ${taxes.length} histori): ~${formatRupiah(avg)}`;
             }
         }
 
         function toggleSisaInput() {
-            const payType = document.getElementById('inputPaymentType').value;
-            const sisaContainer = document.getElementById('sisa-container');
+            const payType = document.getElementById('kpopInputPaymentType').value;
+            const sisaContainer = document.getElementById('kpopSisaContainer');
             if (payType === 'Down Payment') {
                 sisaContainer.classList.remove('hidden');
-                document.getElementById('inputSisa').required = true;
+                document.getElementById('kpopInputSisa').required = true;
             } else {
                 sisaContainer.classList.add('hidden');
-                document.getElementById('inputSisa').required = false;
-                document.getElementById('inputSisa').value = '';
+                document.getElementById('kpopInputSisa').required = false;
+                document.getElementById('kpopInputSisa').value = '';
             }
         }
 
@@ -431,116 +519,140 @@
             }
         }
 
-        // Modal Handler
-        function openModal(monthKey = 'january', isEdit = false, index = null) {
-            const modal = document.getElementById('itemModal');
-            const modalTitle = document.getElementById('modalTitle');
-            const form = document.getElementById('itemForm');
-            
-            document.getElementById('editMonthKey').value = monthKey;
-            document.getElementById('inputMonth').value = monthKey;
-
-            if (isEdit) {
-                modalTitle.innerText = "✏️ Edit Item Belanjaan";
-                document.getElementById('editIndex').value = index;
-                const item = allData[currentCategory].months[monthKey].items[index];
-                
-                document.getElementById('inputName').value = item.name || '';
-                document.getElementById('inputGo').value = item.go || '';
-                document.getElementById('inputCountry').value = item.country || '🇰🇷';
-                document.getElementById('inputForeignPrice').value = item.foreignPrice || 0;
-                document.getElementById('existingImage').value = item.img || '';
-                
-                document.getElementById('dateOrdered').value = item.dateOrdered || '';
-                document.getElementById('dateWh').value = item.dateWh || '';
-                document.getElementById('dateAdmin').value = item.dateAdmin || '';
-                document.getElementById('dateOnhand').value = item.dateOnhand || '';
-
-                document.getElementById('inputPaymentType').value = item.paymentType || 'Full Payment';
-                document.getElementById('inputPrice').value = item.price || 0;
-                document.getElementById('inputSisa').value = item.sisa || 0;
-                document.getElementById('inputTax').value = item.tax || 0;
-                document.getElementById('inputTaxPaid').checked = Boolean(item.taxPaid);
-                document.getElementById('inputStatus').value = item.status || 'Ordered';
-                document.getElementById('inputEstimate').value = item.estimate || '';
-                document.getElementById('inputLink').value = item.link || '';
-                document.getElementById('inputNotes').value = item.notes || '';
-            } else {
-                modalTitle.innerText = "✨ Tambah Item Baru";
-                document.getElementById('editIndex').value = '';
-                form.reset();
-                document.getElementById('existingImage').value = '';
-                document.getElementById('inputMonth').value = monthKey;
-                document.getElementById('inputTaxPaid').checked = false;
-                document.getElementById('dateOrdered').valueAsDate = new Date();
-            }
-
-            toggleSisaInput();
-            updateTaxHint();
-            modal.classList.remove('hidden');
-        }
-
-        function closeModal() {
-            document.getElementById('itemModal').classList.add('hidden');
-        }
-
-        function handleFormSubmit(event) {
-            event.preventDefault();
-            const targetMonth = document.getElementById('inputMonth').value;
-            const editIndex = document.getElementById('editIndex').value;
+        function ensureMonthExists(monthKey) {
             let catMonths = allData[currentCategory].months;
-
-            if (!catMonths[targetMonth]) {
+            if (!catMonths[monthKey]) {
                 const monthNames = {
                     january: "🗓️ Januari 2026", february: "🗓️ Februari 2026", march: "🗓️ Maret 2026",
                     april: "🗓️ April 2026", may: "🗓️ Mei 2026", june: "🗓️ Juni 2026",
                     july: "🗓️ Juli 2026", august: "🗓️ Agustus 2026", september: "🗓️ September 2026",
                     october: "🗓️ Oktober 2026", november: "🗓️ November 2026", december: "🗓️ Desember 2026"
                 };
-                catMonths[targetMonth] = { title: monthNames[targetMonth], isOpen: true, items: [] };
+                catMonths[monthKey] = { title: monthNames[monthKey], isOpen: true, items: [] };
             }
+        }
 
-            const fileInput = document.getElementById('inputPhotoFile');
-            const existingImg = document.getElementById('existingImage').value;
+        // Buka Modal sesuai kategori (K-Pop vs Daily Life)
+        function openModal(monthKey = 'january', isEdit = false, index = null) {
+            if (currentCategory === 'kpop') {
+                const modal = document.getElementById('kpopModal');
+                const form = document.getElementById('kpopForm');
+                document.getElementById('kpopEditMonthKey').value = monthKey;
+                document.getElementById('kpopInputMonth').value = monthKey;
 
-            const processItemData = (imgUrl) => {
-                const payType = document.getElementById('inputPaymentType').value;
-                const priceVal = parseFloat(document.getElementById('inputPrice').value) || 0;
-                const sisaVal = payType === 'Down Payment' ? (parseFloat(document.getElementById('inputSisa').value) || 0) : 0;
-                const taxVal = parseFloat(document.getElementById('inputTax').value) || 0;
-                const taxPaidVal = document.getElementById('inputTaxPaid').checked;
+                if (isEdit) {
+                    document.getElementById('kpopModalTitle').innerText = "✏️ Edit Item K-Pop";
+                    document.getElementById('kpopEditIndex').value = index;
+                    const item = allData.kpop.months[monthKey].items[index];
 
+                    document.getElementById('kpopInputName').value = item.name || '';
+                    document.getElementById('kpopInputGo').value = item.go || '';
+                    document.getElementById('kpopInputCountry').value = item.country || '🇰🇷';
+                    document.getElementById('kpopInputForeignPrice').value = item.foreignPrice || 0;
+                    document.getElementById('kpopExistingImage').value = item.img || '';
+                    document.getElementById('kpopDateOrdered').value = item.dateOrdered || '';
+                    document.getElementById('kpopDateWh').value = item.dateWh || '';
+                    document.getElementById('kpopDateAdmin').value = item.dateAdmin || '';
+                    document.getElementById('kpopDateOnhand').value = item.dateOnhand || '';
+                    document.getElementById('kpopInputPaymentType').value = item.paymentType || 'Full Payment';
+                    document.getElementById('kpopInputPrice').value = item.price || 0;
+                    document.getElementById('kpopInputSisa').value = item.sisa || 0;
+                    document.getElementById('kpopInputTax').value = item.tax || 0;
+                    document.getElementById('kpopInputTaxPaid').checked = Boolean(item.taxPaid);
+                    document.getElementById('kpopInputStatus').value = item.status || 'Ordered';
+                    document.getElementById('kpopInputEstimate').value = item.estimate || '';
+                    document.getElementById('kpopInputLink').value = item.link || '';
+                    document.getElementById('kpopInputNotes').value = item.notes || '';
+                } else {
+                    document.getElementById('kpopModalTitle').innerText = "✨ Tambah Item K-Pop";
+                    document.getElementById('kpopEditIndex').value = '';
+                    form.reset();
+                    document.getElementById('kpopExistingImage').value = '';
+                    document.getElementById('kpopInputMonth').value = monthKey;
+                    document.getElementById('kpopInputTaxPaid').checked = false;
+                    document.getElementById('kpopDateOrdered').valueAsDate = new Date();
+                }
+
+                toggleSisaInput();
+                updateTaxHint();
+                modal.classList.remove('hidden');
+            } else {
+                const modal = document.getElementById('dailyModal');
+                const form = document.getElementById('dailyForm');
+                document.getElementById('dailyEditMonthKey').value = monthKey;
+                document.getElementById('dailyInputMonth').value = monthKey;
+
+                if (isEdit) {
+                    document.getElementById('dailyModalTitle').innerText = "✏️ Edit Jajan Daily Life";
+                    document.getElementById('dailyEditIndex').value = index;
+                    const item = allData.daily.months[monthKey].items[index];
+
+                    document.getElementById('dailyInputName').value = item.name || '';
+                    document.getElementById('dailyExistingImage').value = item.img || '';
+                    document.getElementById('dailyInputLink').value = item.link || '';
+                    document.getElementById('dailyInputPayment').value = item.payment || 'Full Checkout';
+                    document.getElementById('dailyInputCleanPrice').value = item.cleanPrice || 0;
+                    document.getElementById('dailyInputTotalPrice').value = item.totalPrice || 0;
+                    document.getElementById('dailyInputStatus').value = item.status || 'Ordered';
+                    document.getElementById('dailyInputNotes').value = item.notes || '';
+                } else {
+                    document.getElementById('dailyModalTitle').innerText = "☕ Tambah Jajan Daily Life";
+                    document.getElementById('dailyEditIndex').value = '';
+                    form.reset();
+                    document.getElementById('dailyExistingImage').value = '';
+                    document.getElementById('dailyInputMonth').value = monthKey;
+                }
+
+                modal.classList.remove('hidden');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('kpopModal').classList.add('hidden');
+            document.getElementById('dailyModal').classList.add('hidden');
+        }
+
+        function handleKpopSubmit(event) {
+            event.preventDefault();
+            const targetMonth = document.getElementById('kpopInputMonth').value;
+            const editIndex = document.getElementById('kpopEditIndex').value;
+            ensureMonthExists(targetMonth);
+
+            const fileInput = document.getElementById('kpopInputPhotoFile');
+            const existingImg = document.getElementById('kpopExistingImage').value;
+
+            const processItem = (imgUrl) => {
+                const payType = document.getElementById('kpopInputPaymentType').value;
                 const newItem = {
-                    name: document.getElementById('inputName').value,
-                    go: document.getElementById('inputGo').value,
-                    country: document.getElementById('inputCountry').value,
-                    foreignPrice: parseFloat(document.getElementById('inputForeignPrice').value) || 0,
+                    name: document.getElementById('kpopInputName').value,
+                    go: document.getElementById('kpopInputGo').value,
+                    country: document.getElementById('kpopInputCountry').value,
+                    foreignPrice: parseFloat(document.getElementById('kpopInputForeignPrice').value) || 0,
                     img: imgUrl || existingImg || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=120',
-                    dateOrdered: document.getElementById('dateOrdered').value,
-                    dateWh: document.getElementById('dateWh').value,
-                    dateAdmin: document.getElementById('dateAdmin').value,
-                    dateOnhand: document.getElementById('dateOnhand').value,
+                    dateOrdered: document.getElementById('kpopDateOrdered').value,
+                    dateWh: document.getElementById('kpopDateWh').value,
+                    dateAdmin: document.getElementById('kpopDateAdmin').value,
+                    dateOnhand: document.getElementById('kpopDateOnhand').value,
                     paymentType: payType,
-                    price: priceVal,
-                    sisa: sisaVal,
-                    tax: taxVal,
-                    taxPaid: taxPaidVal,
-                    status: document.getElementById('inputStatus').value,
-                    estimate: document.getElementById('inputEstimate').value,
-                    link: document.getElementById('inputLink').value,
-                    notes: document.getElementById('inputNotes').value
+                    price: parseFloat(document.getElementById('kpopInputPrice').value) || 0,
+                    sisa: payType === 'Down Payment' ? (parseFloat(document.getElementById('kpopInputSisa').value) || 0) : 0,
+                    tax: parseFloat(document.getElementById('kpopInputTax').value) || 0,
+                    taxPaid: document.getElementById('kpopInputTaxPaid').checked,
+                    status: document.getElementById('kpopInputStatus').value,
+                    estimate: document.getElementById('kpopInputEstimate').value,
+                    link: document.getElementById('kpopInputLink').value,
+                    notes: document.getElementById('kpopInputNotes').value
                 };
 
-                const oldMonthKey = document.getElementById('editMonthKey').value;
-
+                const oldMonthKey = document.getElementById('kpopEditMonthKey').value;
                 if (editIndex !== '' && oldMonthKey === targetMonth) {
-                    catMonths[targetMonth].items[editIndex] = newItem;
+                    allData.kpop.months[targetMonth].items[editIndex] = newItem;
                 } else {
                     if (editIndex !== '' && oldMonthKey !== targetMonth) {
-                        catMonths[oldMonthKey].items.splice(editIndex, 1);
+                        allData.kpop.months[oldMonthKey].items.splice(editIndex, 1);
                     }
-                    catMonths[targetMonth].items.push(newItem);
-                    catMonths[targetMonth].isOpen = true;
+                    allData.kpop.months[targetMonth].items.push(newItem);
+                    allData.kpop.months[targetMonth].isOpen = true;
                 }
 
                 saveData();
@@ -549,43 +661,100 @@
 
             if (fileInput.files && fileInput.files[0]) {
                 const reader = new FileReader();
-                reader.onload = function(e) { processItemData(e.target.result); };
+                reader.onload = e => processItem(e.target.result);
                 reader.readAsDataURL(fileInput.files[0]);
             } else {
-                processItemData(existingImg);
+                processItem(existingImg);
+            }
+        }
+
+        function handleDailySubmit(event) {
+            event.preventDefault();
+            const targetMonth = document.getElementById('dailyInputMonth').value;
+            const editIndex = document.getElementById('dailyEditIndex').value;
+            ensureMonthExists(targetMonth);
+
+            const fileInput = document.getElementById('dailyInputPhotoFile');
+            const existingImg = document.getElementById('dailyExistingImage').value;
+
+            const processItem = (imgUrl) => {
+                const newItem = {
+                    name: document.getElementById('dailyInputName').value,
+                    img: imgUrl || existingImg || 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=120',
+                    link: document.getElementById('dailyInputLink').value,
+                    payment: document.getElementById('dailyInputPayment').value,
+                    cleanPrice: parseFloat(document.getElementById('dailyInputCleanPrice').value) || 0,
+                    totalPrice: parseFloat(document.getElementById('dailyInputTotalPrice').value) || 0,
+                    status: document.getElementById('dailyInputStatus').value,
+                    notes: document.getElementById('dailyInputNotes').value
+                };
+
+                const oldMonthKey = document.getElementById('dailyEditMonthKey').value;
+                if (editIndex !== '' && oldMonthKey === targetMonth) {
+                    allData.daily.months[targetMonth].items[editIndex] = newItem;
+                } else {
+                    if (editIndex !== '' && oldMonthKey !== targetMonth) {
+                        allData.daily.months[oldMonthKey].items.splice(editIndex, 1);
+                    }
+                    allData.daily.months[targetMonth].items.push(newItem);
+                    allData.daily.months[targetMonth].isOpen = true;
+                }
+
+                saveData();
+                closeModal();
+            };
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => processItem(e.target.result);
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                processItem(existingImg);
             }
         }
 
         function deleteItem(monthKey, index) {
-            if (confirm("Yakin mau hapus item ini dari tracker? 🥺")) {
+            if (confirm("Yakin mau hapus item ini? 🥺")) {
                 allData[currentCategory].months[monthKey].items.splice(index, 1);
                 saveData();
             }
         }
 
-        // Hitung total pengeluaran & sisa tagihan suatu bulan
         function hitungRingkasanBulan(items) {
             let totalBulan = 0;
             let totalSisaBulan = 0;
 
-            items.forEach(item => {
-                const price = Number(item.price) || 0;
-                const sisaDp = item.paymentType === 'Down Payment' ? (Number(item.sisa) || 0) : 0;
-                const tax = Number(item.tax) || 0;
-                const sisaTax = !item.taxPaid ? tax : 0;
+            if (currentCategory === 'kpop') {
+                items.forEach(item => {
+                    const price = Number(item.price) || 0;
+                    const sisaDp = item.paymentType === 'Down Payment' ? (Number(item.sisa) || 0) : 0;
+                    const tax = Number(item.tax) || 0;
+                    const sisaTax = !item.taxPaid ? tax : 0;
 
-                totalBulan += price + sisaDp + tax;
-                totalSisaBulan += sisaDp + sisaTax;
-            });
+                    totalBulan += price + sisaDp + tax;
+                    totalSisaBulan += sisaDp + sisaTax;
+                });
+            } else {
+                items.forEach(item => {
+                    totalBulan += Number(item.totalPrice) || 0;
+                });
+            }
 
             return { totalBulan, totalSisaBulan };
         }
 
-        // Render Tabel Utama
         function renderTrackerView() {
+            if (currentCategory === 'kpop') {
+                renderKpopTracker();
+            } else {
+                renderDailyTracker();
+            }
+        }
+
+        function renderKpopTracker() {
             const container = document.getElementById('months-container');
             container.innerHTML = '';
-            let catMonths = allData[currentCategory].months;
+            const catMonths = allData.kpop.months;
 
             for (const [monthKey, monthData] of Object.entries(catMonths)) {
                 const { totalBulan, totalSisaBulan } = hitungRingkasanBulan(monthData.items);
@@ -707,11 +876,102 @@
             }
         }
 
-        // Render Summary & Chart.js
+        function renderDailyTracker() {
+            const container = document.getElementById('months-container');
+            container.innerHTML = '';
+            const catMonths = allData.daily.months;
+
+            for (const [monthKey, monthData] of Object.entries(catMonths)) {
+                const { totalBulan } = hitungRingkasanBulan(monthData.items);
+                let rowsHTML = '';
+
+                if (monthData.items.length === 0) {
+                    rowsHTML = `<tr><td colspan="9" class="text-center py-6 text-gray-400 italic">Belum ada jajanan di bulan ini. Yuk tambah! ☕</td></tr>`;
+                } else {
+                    monthData.items.forEach((item, index) => {
+                        let statusColor = item.status === 'On Hand' ? 'bg-blue-100 text-blue-700' :
+                                         item.status === 'Jasa Kirim' ? 'bg-amber-100 text-amber-700' : 'bg-purple-100 text-purple-700';
+
+                        let payColor = item.payment === 'COD' ? 'bg-orange-100 text-orange-700' : 'bg-emerald-100 text-emerald-700';
+
+                        let linkButton = item.link
+                            ? `<a href="${item.link}" target="_blank" class="px-2.5 py-1.5 bg-emerald-50 text-emerald-600 hover:bg-emerald-100 rounded-lg text-xs font-bold whitespace-nowrap">🔗 Link</a>`
+                            : `<span class="text-xs text-gray-400">-</span>`;
+
+                        rowsHTML += `
+                            <tr class="hover:bg-gray-50/60 transition border-b border-gray-100 text-sm align-middle">
+                                <td class="py-4 px-3 text-center">
+                                    <img src="${item.img}" class="w-12 h-12 object-cover rounded-xl shadow-sm mx-auto" alt="Foto">
+                                </td>
+                                <td class="py-4 px-3 font-semibold text-gray-800">${item.name}</td>
+                                <td class="py-4 px-3 text-center">${linkButton}</td>
+                                <td class="py-4 px-3 whitespace-nowrap">
+                                    <span class="px-2.5 py-1 ${payColor} rounded-lg text-xs font-bold">${item.payment}</span>
+                                </td>
+                                <td class="py-4 px-3 font-medium text-gray-700 whitespace-nowrap">${formatRupiah(item.cleanPrice)}</td>
+                                <td class="py-4 px-3 font-extrabold text-emerald-600 whitespace-nowrap">${formatRupiah(item.totalPrice)}</td>
+                                <td class="py-4 px-3 whitespace-nowrap">
+                                    <span class="px-3 py-1 ${statusColor} rounded-full text-xs font-semibold">${item.status}</span>
+                                </td>
+                                <td class="py-4 px-3 text-gray-500 italic text-xs">${item.notes || '-'}</td>
+                                <td class="py-4 px-3 text-center space-x-1 whitespace-nowrap">
+                                    <button onclick="openModal('${monthKey}', true, ${index})" class="px-2 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg text-xs font-bold">✏️ Edit</button>
+                                    <button onclick="deleteItem('${monthKey}', ${index})" class="px-2 py-1.5 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg text-xs font-bold">🗑️</button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                }
+
+                container.innerHTML += `
+                    <section class="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100">
+                        <div class="flex justify-between items-center p-6 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold text-xl">
+                            <button onclick="toggleMonth('${monthKey}')" class="flex items-center space-x-3 flex-grow text-left focus:outline-none">
+                                <span>${monthData.title}</span>
+                                <span class="text-xs bg-white/25 px-2.5 py-1 rounded-full">${monthData.items.length} Item</span>
+                            </button>
+                            <div class="flex items-center space-x-3">
+                                <button onclick="openModal('${monthKey}')" class="bg-white/20 hover:bg-white/30 text-white text-xs px-3 py-1.5 rounded-lg">➕ Tambah Item</button>
+                                <button onclick="toggleMonth('${monthKey}')" class="text-xl font-extrabold transition duration-300 ${monthData.isOpen ? 'rotate-180' : ''}">▼</button>
+                            </div>
+                        </div>
+                        <div class="p-6 space-y-6 ${monthData.isOpen ? '' : 'hidden'}">
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse min-w-[950px]">
+                                    <thead>
+                                        <tr class="border-b text-gray-400 text-xs uppercase tracking-wider">
+                                            <th class="py-3 px-3 text-center">Foto</th>
+                                            <th class="py-3 px-3">Barang</th>
+                                            <th class="py-3 px-3 text-center">Link Barang</th>
+                                            <th class="py-3 px-3">Payment</th>
+                                            <th class="py-3 px-3">Harga Bersih</th>
+                                            <th class="py-3 px-3">Total Harga</th>
+                                            <th class="py-3 px-3">Status</th>
+                                            <th class="py-3 px-3">Notes</th>
+                                            <th class="py-3 px-3 text-center">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-100">${rowsHTML}</tbody>
+                                </table>
+                            </div>
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-gray-50 p-4 rounded-xl border border-gray-200 gap-2">
+                                <span class="font-bold text-gray-700">☕ Total Jajan Daily ${monthData.title.replace('🗓️ ', '')}:</span>
+                                <span class="font-extrabold text-xl text-emerald-600">${formatRupiah(totalBulan)}</span>
+                            </div>
+                        </div>
+                    </section>
+                `;
+            }
+        }
+
         function renderSummaryView() {
-            let catMonths = allData[currentCategory].months;
-            let tableBody = document.getElementById('summary-table-body');
+            const catMonths = allData[currentCategory].months;
+            const tableBody = document.getElementById('summary-table-body');
+            const extraTh = document.getElementById('summary-extra-th');
             tableBody.innerHTML = '';
+
+            const isKpop = currentCategory === 'kpop';
+            extraTh.classList.toggle('hidden', !isKpop);
 
             let labels = [];
             let dataTotals = [];
@@ -726,8 +986,8 @@
                     <tr class="border-b border-gray-100 hover:bg-gray-50">
                         <td class="py-3 px-4 font-semibold text-gray-800">${monthData.title}</td>
                         <td class="py-3 px-4 text-gray-600">${monthData.items.length} Item</td>
-                        <td class="py-3 px-4 text-right font-semibold ${totalSisaBulan > 0 ? 'text-amber-600' : 'text-emerald-600'}">${formatRupiah(totalSisaBulan)}</td>
-                        <td class="py-3 px-4 text-right font-extrabold text-pink-600">${formatRupiah(totalBulan)}</td>
+                        ${isKpop ? `<td class="py-3 px-4 text-right font-semibold ${totalSisaBulan > 0 ? 'text-amber-600' : 'text-emerald-600'}">${formatRupiah(totalSisaBulan)}</td>` : ''}
+                        <td class="py-3 px-4 text-right font-extrabold ${isKpop ? 'text-pink-600' : 'text-emerald-600'}">${formatRupiah(totalBulan)}</td>
                     </tr>
                 `;
             }
@@ -742,8 +1002,8 @@
                     datasets: [{
                         label: 'Total Pengeluaran (Rp)',
                         data: dataTotals,
-                        backgroundColor: 'rgba(236, 72, 153, 0.7)',
-                        borderColor: 'rgb(219, 39, 119)',
+                        backgroundColor: isKpop ? 'rgba(236, 72, 153, 0.7)' : 'rgba(16, 185, 129, 0.7)',
+                        borderColor: isKpop ? 'rgb(219, 39, 119)' : 'rgb(5, 150, 105)',
                         borderWidth: 2,
                         borderRadius: 8
                     }]
